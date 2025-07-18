@@ -18,6 +18,8 @@ from .constants import BAUD_RATE, READING_TIMEOUT, BIG_ENDIAN
 from .Loupedeck import UNKNOWN_DEVICE, Loupedeck
 from ..ImageHelpers import PILHelper
 
+import sys
+
 
 logger = logging.getLogger("LoupedeckLive")
 # logger.setLevel(logging.DEBUG)
@@ -345,6 +347,7 @@ class LoupedeckLive(Loupedeck):
         if self.inited:
             if not self.reading_running:
                 self.reading_thread = threading.Thread(target=self._read_serial)
+                self.reading_thread.daemon = True
                 self.reading_thread.name = "LoupedeckLive::_read_serial"
                 self.reading_running = True
                 self.reading_thread.start()
@@ -353,6 +356,7 @@ class LoupedeckLive(Loupedeck):
                 logger.warning("start: read already running")
             if not self.process_running:
                 self.process_thread = threading.Thread(target=self._process_messages)
+                self.process_thread.daemon = True
                 self.process_thread.name = "LoupedeckLive::_process_messages"
                 self.process_running = True
                 self.process_thread.start()

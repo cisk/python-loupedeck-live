@@ -72,6 +72,7 @@ class Loupedeck:
         thread is currently updating the deck, even if it is doing multiple
         operations (e.g. setting the image on multiple keys).
         """
+        # self.update_lock.acquire(timeout=30)
         self.update_lock.acquire()
 
     def __exit__(self, type, value, traceback):
@@ -79,6 +80,7 @@ class Loupedeck:
         Exit handler for the StreamDeck, releasing the exclusive update lock on
         the deck.
         """
+        # self.update_lock.release(timeout=30)
         self.update_lock.release()
 
     def deck_type(self):
